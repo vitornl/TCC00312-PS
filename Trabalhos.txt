@@ -1,0 +1,90 @@
+Trabalhos
+=========
+
+1. Utilizando como base o exercício "Exercicio05-AppService-JPAUtil-DAO", altere a classe JPAUtil para que seja possível um método de serviço
+   chamar outro método de serviço sem que ocorra um erro. Para testar a sua solução, crie uma classe de serviço com um método que chama um  
+   método de serviço de outra classe e cuide para que apenas último commit seja executado.
+
+Exemplo:
+
+
+public class ProdutoAppService
+{	
+    private static ProdutoDAO produtoDAO = FabricaDeDAOs.getDAO(ProdutoDAO.class);
+
+    public void altera(Produto umProduto) throws ProdutoNaoEncontradoException
+    {   
+        try
+        {   JPAUtil.beginTransaction();
+        
+            Aqui você deve mandar executar um método de uma outra classe de serviço e
+            durante a execução deste método de serviço a transação não deve ser comitada.
+            Observe que este método desta outra classe de serviço irá conter as chamadas a 
+            JPAUtil.beginTransaction() e JPAUtil.commitTransaction(). No entanto, a transação
+            só deverá ser comitada quando for executado JPAUtil.commitTransaction() abaixo. 
+
+            produtoDAO.altera(umProduto);
+
+            JPAUtil.commitTransaction();     // <=== Isto é, o commit deve acontecer apenas aqui!
+        } 
+        catch(ObjetoNaoEncontradoException e)
+        {	
+            JPAUtil.rollbackTransaction();
+            throw new ProdutoNaoEncontradoException("Produto não encontrado");
+        }
+        ...
+    }
+}
+
+Prazo de entrega: 20/10
+
+
+
+2. Utilizando como base o exercício "Exercicio07-Produto-Lance-com-c3p0" implemente um projeto semelhante, que contenha 
+   uma associação um para muitos entre duas classes do domínio do problema. Converse comigo sobre o projeto que você 
+   pretende implementar para possamos validar a escolha das classes que serão utilizadas.
+
+Prazo de entrega: 27/10
+
+
+
+3. Utilizando como base o exercício "Exercicio11-JPA-DAO-Generico" altere o tabalho número 2, removendo os DAOs 
+   utilizados nele e acrescentando um DAO genérico.
+
+Prazo de entrega: 03/11
+
+
+
+4. Acrescente ao trabalho N.3 o aspecto relativo a controle de violação de constraints de banco de dados. Este aspecto 
+   foi apresentado  no  Exercicio10-Produto-Lance-com-LOG4J-Aspecto-para-Constraint-V2 que consta da pasta de exercícios 
+   incompletos da JPA.
+
+Prazo de entrega: 20/11
+
+
+5. Acrescente ao trabalho N.4 um aspecto para controle de permissões. Para implementar este trabalho siga os seguintes passos:  
+   1. Crie as seguintes anotações: RoleAdmim, RoleUser1, RoleUser2 e RoleUser3. Cada anotação representa uma permissão que um 
+      determinado usuário pode possuir.
+   2. Anote cada método de serviço com nenhuma ou mais anotações.
+   3. Crie um aspecto que só permita a execução de um método de serviço caso o usuário corrente possua pelo menos uma das 
+      permissões definidas para o método através das anotações. Isto é, se um método tiver sido anotado com a anotação 
+      RoleAdmin, por exemplo, o usuário corrente só poderá executar este método caso possua a permissão "RoleAdmin" na sua 
+      lista de permissões. 
+   4. A lista de permissões do usuário corrente poderá ser definida em um bloco estático que será executado quando a classe
+      que possui o método main() for executada. Esta lista de permissões pode ser um ArrayList de Strings (ArrayList<String>).
+   5. Caso o usuário corrente não possua permissão para a execução de um determinado método de serviço, o aspecto deverá lançar 
+      a exceção ExecucaoDeMetodoSemARespectivaPermissaoException. O método main() deverá capturar esta exceção e deverá exibir
+      a seguinte mensagem: "Você não tem permissão para efetuar esta operação". 
+
+Prazo de entrega: 27/11
+
+
+6. Implementar o trabalho N. 5 utilizando uma interface gráfica (Swing) conforme definição apresentada em sala de aula.
+
+Prazo de entrega: A combinar. 
+
+ 
+
+
+
+    
