@@ -1,0 +1,1 @@
+2 - Ao remover um journal com paper associados dá erro no java, mas não alerta o cliente;
