@@ -3,10 +3,14 @@ package service;
 import java.util.List;
 import dao.JournalDAO;
 import errors.ObjetoNaoEncontradoException;
+import errors.PermissaoException;
 import errors.JournalComPapersException;
 import errors.JournalNaoEncontradoException;
 import models.Journal;
 import org.springframework.transaction.annotation.Transactional;
+
+import anotations.ROLE_ADMIN;
+import anotations.ROLE_USER1;
 
 public class JournalService{	
 	
@@ -22,13 +26,18 @@ public class JournalService{
 	}
 	 
 	//Adicionando um objeto 'Journal'
-	public long inclui(Journal umJournal){	
+	@Transactional
+	@ROLE_ADMIN
+	public long inclui(Journal umJournal) throws PermissaoException {	
 		return journalDAO.inclui(umJournal).getId();
 	}
 
-	@Transactional
+	
 	//Modificando um objeto 'Journal'
-	public void altera(Journal umJournal)throws JournalNaoEncontradoException {	
+	@Transactional
+	@ROLE_ADMIN
+	@ROLE_USER1
+	public void altera(Journal umJournal)throws JournalNaoEncontradoException, PermissaoException {	
 		try	{
 			journalDAO.getPorIdComLock(umJournal.getId());
 			journalDAO.altera(umJournal);
@@ -40,7 +49,8 @@ public class JournalService{
 
 
 	@Transactional
-	public void exclui(Journal umJournal) throws JournalNaoEncontradoException, JournalComPapersException{
+	@ROLE_ADMIN
+	public void exclui(Journal umJournal) throws JournalNaoEncontradoException, JournalComPapersException, PermissaoException{
 		try{	
 			Journal journal = journalDAO.getPorId(umJournal.getId());
 			if(journal.getPapers().size() > 0){

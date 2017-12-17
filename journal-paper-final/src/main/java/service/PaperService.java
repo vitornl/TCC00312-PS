@@ -4,11 +4,15 @@ import java.util.List;
 import dao.PaperDAO;
 import dao.JournalDAO;
 import errors.PaperNaoEncontradoException;
+import errors.PermissaoException;
 import errors.ObjetoNaoEncontradoException;
 import errors.JournalNaoEncontradoException;
 import models.Paper;
 import models.Journal;
 import org.springframework.transaction.annotation.Transactional;
+
+import anotations.ROLE_ADMIN;
+import anotations.ROLE_USER1;
 
 public class PaperService{	
 	private JournalDAO journalDAO = null;
@@ -21,21 +25,25 @@ public class PaperService{
 	public void setPaperDAO(PaperDAO paperDAO){	
 		this.paperDAO = paperDAO;
 	}
-
+	
 	@Transactional
-	public long inclui(Paper umPaper) throws JournalNaoEncontradoException {
+	@ROLE_ADMIN
+	public long inclui(Paper umPaper) throws JournalNaoEncontradoException, PermissaoException {
 		Paper paper = paperDAO.inclui(umPaper);
 		return umPaper.getId();
 	}	
 	
 	@Transactional
-	public long altera(Paper umPaper) throws JournalNaoEncontradoException {
+	@ROLE_ADMIN
+	@ROLE_USER1
+	public long altera(Paper umPaper) throws JournalNaoEncontradoException, PermissaoException {
 		paperDAO.altera(umPaper);
 		return umPaper.getId();
 	}
 
 	@Transactional
-	public void exclui(Paper umPaper)throws PaperNaoEncontradoException {
+	@ROLE_ADMIN
+	public void exclui(Paper umPaper)throws PaperNaoEncontradoException, PermissaoException {
 		try	{
 			umPaper = paperDAO.getPorId(umPaper.getId());
 			paperDAO.exclui(umPaper);

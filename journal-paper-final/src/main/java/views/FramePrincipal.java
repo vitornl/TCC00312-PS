@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
@@ -15,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import permissions.PermissoesSingleton;
 
 
 public class FramePrincipal extends JFrame
@@ -29,6 +32,7 @@ public class FramePrincipal extends JFrame
 	
 	JPanel panel;
 	JLabel lblNewLabel;
+	
 	
 	public FramePrincipal() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

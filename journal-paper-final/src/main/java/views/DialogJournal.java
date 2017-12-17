@@ -20,6 +20,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import errors.JournalComPapersException;
 import errors.JournalNaoEncontradoException;
+import errors.PermissaoException;
 import errors.ViolacaoDeConstraintDesconhecidaException;
 import models.Journal;
 import service.JournalService;
@@ -178,12 +179,18 @@ public class DialogJournal extends JDialog implements ActionListener
 				umJournal.setVolume(Integer.parseInt(volumeTextField.getText()));
 				umJournal.setValor(Float.parseFloat(valorTextField.getText()));
 
-				journalService.inclui(umJournal);	// inclui o journal
-				
-				salvo();
-				
-				JOptionPane.showMessageDialog(this, "Journal cadastrado com sucesso", "", 
-						JOptionPane.INFORMATION_MESSAGE);
+				try {
+					journalService.inclui(umJournal);
+					
+					salvo();
+					
+					JOptionPane.showMessageDialog(this, "Journal cadastrado com sucesso", "", 
+							JOptionPane.INFORMATION_MESSAGE);
+				} catch (PermissaoException e1) {
+					JOptionPane.showMessageDialog(this, "Você não tem permissão para isso, amiguinho", "", 
+							JOptionPane.ERROR_MESSAGE);
+				}	// inclui o journal
+
 			}
 		}
 		else if(obj == editarButton)
@@ -215,6 +222,9 @@ public class DialogJournal extends JDialog implements ActionListener
 					
 					JOptionPane.showMessageDialog(this, "Journal não encontrado", "", 
 						JOptionPane.ERROR_MESSAGE);
+				} catch (PermissaoException e1) {
+					JOptionPane.showMessageDialog(this, "Você não tem permissão para isso, amiguinho", "", 
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}
@@ -235,6 +245,9 @@ public class DialogJournal extends JDialog implements ActionListener
 				
 				JOptionPane.showMessageDialog(this, "Journal possui Papers associados", "", 
 					JOptionPane.ERROR_MESSAGE);
+			} catch (PermissaoException e1) {
+				JOptionPane.showMessageDialog(this, "Você não tem permissão para isso, amiguinho", "", 
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		else if(obj == cancelarButton)

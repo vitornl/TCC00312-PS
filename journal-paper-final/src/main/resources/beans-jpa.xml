@@ -15,9 +15,9 @@
 
 
     <!--bean id="JournalService"   class="service.JournalService" />
-	<bean id="PaperService"   class="service.PaperService" />
+	<bean id="PaperService"   class="service.PaperService" /-->
 
-    <context:component-scan base-package="dao.impl" /-->
+    <context:component-scan base-package="dao.impl" />
 
 	<bean id="JournalService" class="service.JournalService">
         <property name="journalDAO" ref="journalDAOImpl" />

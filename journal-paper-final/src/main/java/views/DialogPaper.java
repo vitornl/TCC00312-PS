@@ -20,6 +20,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import errors.JournalNaoEncontradoException;
 import errors.PaperNaoEncontradoException;
+import errors.PermissaoException;
 import errors.ViolacaoDeConstraintDesconhecidaException;
 import models.Journal;
 import models.Paper;
@@ -191,15 +192,19 @@ public class DialogPaper extends JDialog implements ActionListener
 				umPaper.setJournal(umJournal);
 				try {
 					paperService.inclui(umPaper);
+					salvo();
+					
+					JOptionPane.showMessageDialog(this, "Paper cadastrado com sucesso", "", 
+							JOptionPane.INFORMATION_MESSAGE);
 				} catch (JournalNaoEncontradoException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}	// inclui o paper
+				catch (PermissaoException e1) {
+					JOptionPane.showMessageDialog(this, "Você não tem permissão para isso, amiguinho", "", 
+				JOptionPane.ERROR_MESSAGE);
+				}
 				
-				salvo();
-				
-				JOptionPane.showMessageDialog(this, "Paper cadastrado com sucesso", "", 
-						JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 		else if(obj == editarButton)
@@ -230,6 +235,9 @@ public class DialogPaper extends JDialog implements ActionListener
 					
 					JOptionPane.showMessageDialog(this, "Paper não encontrado", "", 
 						JOptionPane.ERROR_MESSAGE);
+				} catch (PermissaoException e1) {
+					JOptionPane.showMessageDialog(this, "Você não tem permissão para isso, amiguinho", "", 
+							JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}
@@ -250,6 +258,9 @@ public class DialogPaper extends JDialog implements ActionListener
 				
 				JOptionPane.showMessageDialog(this, "Paper não encontrado", "", 
 					JOptionPane.ERROR_MESSAGE);
+			} catch (PermissaoException e1) {
+				JOptionPane.showMessageDialog(this, "Você não tem permissão para isso, amiguinho", "", 
+						JOptionPane.ERROR_MESSAGE);
 			}
 		}
 		else if(obj == cancelarButton)
